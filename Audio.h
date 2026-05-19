@@ -34,6 +34,8 @@
 #error "The Audio Library only works with 32 bit Teensy models.  Teensy 2.0 is unsupported."
 #endif
 
+#include "Audio96Config.h"
+
 #include <DMAChannel.h>  // github.com/PaulStoffregen/cores/blob/master/teensy4/DMAChannel.h
 #if !defined(DMACHANNEL_HAS_BEGIN) || !defined(DMACHANNEL_HAS_BOOLEAN_CTOR)
 #error "You need to update DMAChannel.h & DMAChannel.cpp"

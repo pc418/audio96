@@ -47,8 +47,8 @@ function processFile(file, fileName, sampleRateChoice, encodingChoice) {
     } catch(err) {
       console.log('problem reading sample rate');
     }
-    if([44100, 22050, 11025].indexOf(sampleRate) == -1) {
-      sampleRate = 44100;
+    if([96000].indexOf(sampleRate) == -1) {
+      sampleRate = 96000;
     }
   } else {
     sampleRate = sampleRateChoice;
@@ -74,16 +74,8 @@ function processFile(file, fileName, sampleRateChoice, encodingChoice) {
     var sampleRateCode;
     if(encoding == 'u-law') encodingCode = '0';
     else encodingCode = '8'; // PCM
-    if(sampleRate == 44100) {
-      padLength = padding(monoData.length, 128);
-      sampleRateCode = '1';
-    } else if(sampleRate == 22050) {
-      padLength = padding(monoData.length, 64);
-      sampleRateCode = '2';
-    } else if(sampleRate == 11025) {
-      padLength = padding(monoData.length, 32);
-      sampleRateCode = '3';
-    }
+    padLength = padding(monoData.length, 128);
+    sampleRateCode = '1';
 
     var ulawOut = [];
     for(var i = 0; i < monoData.length; i ++) {

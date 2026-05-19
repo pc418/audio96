@@ -62,8 +62,19 @@ Quantizer::Quantizer(float audio_sample_rate){
     //      {1.        , -2.54334066,  3.58558504, -3.88076402,  3.37325788,
     //      -1.88579617,  0.58209648,  0.09575588, -0.30086406,  0.1967454};
     //    }
-    }
-	else {
+    } else if(audio_sample_rate==96000.f){
+        // Reuse 48 kHz coefficients at 96 kHz as a practical approximation.
+        // This keeps noise shaping enabled instead of falling back to zeros.
+        _noiseSFilter[0]=0.1967454f;
+        _noiseSFilter[1]=-0.30086406f;
+        _noiseSFilter[2]= 0.09575588f;
+        _noiseSFilter[3]=  0.58209648f;
+        _noiseSFilter[4]= -1.88579617f;
+        _noiseSFilter[5]= 3.37325788f;
+        _noiseSFilter[6]= -3.88076402f;
+        _noiseSFilter[7]= 3.58558504f;
+        _noiseSFilter[8]= -2.54334066f;
+    } else {
 		_noiseSFilter[0]=0.f;
         _noiseSFilter[1]=0.f;
         _noiseSFilter[2]=0.f;

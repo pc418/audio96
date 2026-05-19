@@ -31,7 +31,7 @@
 
 #if defined(__MK20DX256__) || defined(__MK64FX512__) || defined(__MK66FX1M0__)
 
-#define COEF_HPF_DCBLOCK    (1048300<<10)  // DC Removal filter coefficient in S1.30
+#define COEF_HPF_DCBLOCK    1073601281  // DC Removal filter coefficient in S1.30 (fc=2 Hz @ 96 kHz)
 
 DMAMEM __attribute__((aligned(32))) static uint16_t left_buffer[AUDIO_BLOCK_SAMPLES];
 DMAMEM __attribute__((aligned(32))) static uint16_t right_buffer[AUDIO_BLOCK_SAMPLES];
@@ -81,7 +81,7 @@ void AudioInputAnalogStereo::init(uint8_t pin0, uint8_t pin1)
     hpf_y1[1] = 0;     // Output will settle here when stable
 
 
-	// set the programmable delay block to trigger the ADC at 44.1 kHz
+	// set the programmable delay block to trigger the ADC at 96 kHz
 	//if (!(SIM_SCGC6 & SIM_SCGC6_PDB)
 	  //|| (PDB0_SC & PDB_CONFIG) != PDB_CONFIG
 	  //|| PDB0_MOD != PDB_PERIOD
@@ -264,7 +264,7 @@ void AudioInputAnalogStereo::update(void)
     //   y = a*(x[n] - x[n-1] + y[n-1])
     // The coefficient "a" is as follows:
     //  a = UNITY*e^(-2*pi*fc/fs)
-    //  fc = 2 @ fs = 44100
+    //  fc = 2 @ fs = 96000
     //
 
     // DC removal, LEFT

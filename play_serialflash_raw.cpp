@@ -98,7 +98,7 @@ void AudioPlaySerialflashRaw::update(void)
 	release(block);
 }
 
-#define B2M (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT / 2.0) // 97352592
+#define B2M (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT / 2.0)
 
 uint32_t AudioPlaySerialflashRaw::positionMillis(void)
 {
@@ -109,5 +109,4 @@ uint32_t AudioPlaySerialflashRaw::lengthMillis(void)
 {
 	return ((uint64_t)file_size * B2M) >> 32;
 }
-
 

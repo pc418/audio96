@@ -83,9 +83,9 @@ void wav2c(FILE *in, FILE *out, FILE *outh)
 	//printf("format: %d, channels: %d, rate: %d, bits %d\n", format, channels, rate, bits);
 	if (format != 1)
 		die("file %s is compressed, only uncompressed supported", filename);
-	if (rate != 44100 && rate != 22050 && rate != 11025 /*&& rate != 8000*/ )
+	if (rate != 96000)
 		die("sample rate %d in %s is unsupported\n"
-		  "Only 44100, 22050, 11025 work", rate, filename);
+		  "Only 96000 works", rate, filename);
 	if (channels != 1 && channels != 2)
 		die("file %s has %d channels, but only 1 & 2 are supported", filename, channels);
 	if (bits != 16)
@@ -119,17 +119,9 @@ void wav2c(FILE *in, FILE *out, FILE *outh)
 	if (length > 0xFFFFFF) die("file %s data length is too long", filename);
 	bcount = 0;
 
-	// AudioPlayMemory requires padding to 2.9 ms boundary (128 samples @ 44100)
-	if (rate == 44100) {
-		padlength = padding(length, 128);
-		format = 1;
-	} else if (rate == 22050) {
-		padlength = padding(length, 64);
-		format = 2;
-	} else if (rate == 11025) {
-		padlength = padding(length, 32);
-		format = 3;
-	}
+	// AudioPlayMemory requires padding to the audio block boundary.
+	padlength = padding(length, 128);
+	format = 1;
 	if (pcm_mode) {
 		arraylen = ((length + padlength) * 2 + 3) / 4 + 1;
 		format |= 0x80;

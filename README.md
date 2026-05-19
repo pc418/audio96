@@ -1,7 +1,9 @@
-Teensy Audio Library
+Teensy Audio96 Library
 ====================
 
-16 bit, 44.1 kHz streaming audio library for Teensy 3.x and Teensy 4.x, featuring:
+16 bit, 96 kHz streaming audio library for Teensy 3.x and Teensy 4.x, based on the official PJRC Audio library and featuring:
+
+Toolchain requirement: use Teensyduino 1.59 for this repository. Do not use Teensyduino 1.60; it is known to introduce a blocking bug for this setup.
 
 * Polyphonic Playback
 * Recording
@@ -55,16 +57,7 @@ Dual [Audio Adaptor Boards](http://www.pjrc.com/store/teensy3_audio.html) for qu
 
 ![DAC Output](/gui/img/dacpins.png)
 
-[Teensy 3.6](http://www.pjrc.com/store/teensy36.html), [Teensy 3.5](http://www.pjrc.com/store/teensy35.html), [Teensy 3.2](http://www.pjrc.com/store/teensy32.html), [Teensy 3.1](http://www.pjrc.com/store/teensy31.html) or [Teensy 3.0](http://www.pjrc.com/store/teensy3.html) PWM Output (Mono)
-
-![PWM Output](/gui/img/pwmdualcircuit.jpg)
-
-USB Audio: Bi-Directional Stereo Streaming to a PC
-
-![Inputs](/gui/img/usbtype_audio_in.png)      ![Outputs](/gui/img/usbtype_audio_out.png)
-
-
-
+Unsupported in this 96 kHz fork: PWM Output and USB Audio bidirectional streaming to a PC.
 
 
 

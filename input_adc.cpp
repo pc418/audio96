@@ -32,7 +32,7 @@
 
 #include "utility/pdb.h"
 
-#define COEF_HPF_DCBLOCK    (1048300<<10)  // DC Removal filter coefficient in S1.30
+#define COEF_HPF_DCBLOCK    1073601281  // DC Removal filter coefficient in S1.30 (fc=2 Hz @ 96 kHz)
 
 DMAMEM __attribute__((aligned(32))) static uint16_t analog_rx_buffer[AUDIO_BLOCK_SAMPLES];
 audio_block_t * AudioInputAnalog::block_left = NULL;
@@ -65,7 +65,7 @@ void AudioInputAnalog::init(uint8_t pin)
 	hpf_x1 = tmp;   // With constant DC level x1 would be x0
 	hpf_y1 = 0;     // Output will settle here when stable
 
-	// set the programmable delay block to trigger the ADC at 44.1 kHz
+	// set the programmable delay block to trigger the ADC at 96 kHz
 	if (!(SIM_SCGC6 & SIM_SCGC6_PDB)
 	  || (PDB0_SC & PDB_CONFIG) != PDB_CONFIG
 	  || PDB0_MOD != PDB_PERIOD
@@ -189,7 +189,7 @@ void AudioInputAnalog::update(void)
     //   y = a*(x[n] - x[n-1] + y[n-1])
     // The coefficient "a" is as follows:
     //  a = UNITY*e^(-2*pi*fc/fs)
-    //  fc = 2 @ fs = 44100
+    //  fc = 2 @ fs = 96000
     //
 	p = out_left->data;
 	end = p + AUDIO_BLOCK_SAMPLES;
@@ -274,7 +274,7 @@ PROGMEM static const uint8_t adc2_pin_to_channel[] = {
 };
 
 
-// http://t-filter.engineerjs.com/  (use 176400 sample freq, int 18 bit output)
+// http://t-filter.engineerjs.com/  (originally 176400; regenerate at 384000 for 4x 96 kHz if needed)
 static const int16_t filter[] = {
 #if 1
 33, 125, 299, 591, 979, 1420, 1798, 1971, 1784, 1136, 26, -1391, -2811,

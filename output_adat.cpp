@@ -117,7 +117,7 @@ void AudioOutputADAT::begin(void)
 	http://cache.freescale.com/files/32bit/doc/app_note/AN4800.pdf
 
 	We need a bitrate twice as high as the SPDIF example.
-	Because BITCLK can not be the same as MCLK, but only half of MCLK, we need a 2*MCLK (so for 44100 samplerate we need 88200 MCLK)
+	Because BITCLK can not be the same as MCLK, but only half of MCLK, we need a 2*MCLK (so for 96000 samplerate we need 192000 MCLK)
 */
 
 void AudioOutputADAT::isr(void)
@@ -652,7 +652,7 @@ void AudioOutputADAT::config_ADAT(void)
 	//while (I2S0_MCR & I2S_MCR_DUF) ;
 	//I2S0_MDR = I2S_MDR_FRACT((MCLK_MULT-1)) | I2S_MDR_DIVIDE((MCLK_DIV-1));
 
-	AudioOutputADAT::setI2SFreq(88200);
+	AudioOutputADAT::setI2SFreq((int)(AUDIO_SAMPLE_RATE_EXACT * 2.0f + 0.5f));
 
 	// configure transmitter
 	I2S0_TMR = 0;
@@ -748,4 +748,3 @@ void AudioOutputADAT::update(void)
 }
 
 #endif
-

@@ -28,6 +28,7 @@
 
 #ifndef _SYNTH_SIMPLE_DRUM_H_
 #define _SYNTH_SIMPLE_DRUM_H_
+#include "Audio96Config.h"
 #include <AudioStream.h>     // github.com/PaulStoffregen/cores/blob/master/teensy4/Arduino.h
 #include "utility/dspinst.h"
 

@@ -521,9 +521,7 @@ start:
 //  256 byte chunks, speed is 443272 bytes/sec
 //  512 byte chunks, speed is 468023 bytes/sec
 
-#define B2M_44100 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT) // 97352592
-#define B2M_22050 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT * 2.0)
-#define B2M_11025 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT * 4.0)
+#define B2M_96000 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT)
 
 bool AudioPlaySdWav::parse_format(void)
 {
@@ -541,14 +539,8 @@ bool AudioPlaySdWav::parse_format(void)
 	rate = header[1];
 	//Serial.print("  rate = ");
 	//Serial.println(rate);
-	if (rate == 44100) {
-		b2m = B2M_44100;
-	} else if (rate == 22050) {
-		b2m = B2M_22050;
-		num |= 4;
-	} else if (rate == 11025) {
-		b2m = B2M_11025;
-		num |= 4;
+	if (rate == 96000) {
+		b2m = B2M_96000;
 	} else {
 		return false;
 	}
@@ -556,24 +548,16 @@ bool AudioPlaySdWav::parse_format(void)
 	channels = header[0] >> 16;
 	//Serial.print("  channels = ");
 	//Serial.println(channels);
-	if (channels == 1) {
-	} else if (channels == 2) {
-		b2m >>= 1;
-		num |= 1;
-	} else {
-		return false;
-	}
+	if (channels != 2) return false;
+	b2m >>= 1;
+	num |= 1;
 
 	bits = header[3] >> 16;
 	//Serial.print("  bits = ");
 	//Serial.println(bits);
-	if (bits == 8) {
-	} else if (bits == 16) {
-		b2m >>= 1;
-		num |= 2;
-	} else {
-		return false;
-	}
+	if (bits != 16) return false;
+	b2m >>= 1;
+	num |= 2;
 
 	bytes2millis = b2m;
 	//Serial.print("  bytes2millis = ");
@@ -629,7 +613,6 @@ uint32_t AudioPlaySdWav::lengthMillis(void)
 	uint32_t b2m = *(volatile uint32_t *)&bytes2millis;
 	return ((uint64_t)tlength * b2m) >> 32;
 }
-
 
 
 

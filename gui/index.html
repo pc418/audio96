@@ -2716,7 +2716,7 @@ Returns the actual achieved attenuation of the anti-aliasing filter. If the inpu
 	<p class=exam>File &gt; Examples &gt; Audio &gt; WavFilePlayer
 	</p>
 	<h3>Notes</h3>
-	<p>Only 16 bit PCM, 44100 Hz WAV files are supported.  When mono
+	<p>Only 16 bit PCM, 96000 Hz WAV files are supported.  When mono
 		files are played, both output ports transmit a copy of the
 		single sound.  Of course, stereo WAV files play with the left
 		channel on port 0 and the right channel on port 1.
@@ -4321,11 +4321,11 @@ double s_freq = .0625;</p>
 
     <p class=func><span class=keyword>sampleRate</span>(xsampleRate);</p>
 
-    <p class=desc>xsampleRate sets the frequency, from 1 to 44100Hz, however it
+    <p class=desc>xsampleRate sets the frequency, from 1 to 96000Hz, however it
     works in integer steps so you will only really get a handful of results from
-    the many samplerates you can pass. 44100 is passthru.</p>
+    the many samplerates you can pass. 96000 is passthru.</p>
 
-    <p class=desc>set xbitDepth to 16 and xsampleRate to 44100 to pass audio
+    <p class=desc>set xbitDepth to 16 and xsampleRate to 96000 to pass audio
     	through without any Bitcrush effect.</p>
     <h3>Examples</h3>
     <p class=exam>File &gt; Examples &gt; Audio &gt; Effects &gt; Bitcrusher
@@ -4654,7 +4654,7 @@ double s_freq = .0625;</p>
 	<p>The free
 		<a href="http://t-filter.engineerjs.com/" target="_blank"> TFilter Design Tool</a>
 		can be used to create the impulse response array.  Be sure to set the sampling
-		frequency to 44117 HZ (it defaults to only 2000 Hz) and the output type to "int" (16 bit).
+		frequency to 96000 Hz (it defaults to only 2000 Hz) and the output type to "int" (16 bit).
 	</p>
 	<p>
 		If you use TFilter Design's "C/C++ array" option, it's output has "int" definition, which

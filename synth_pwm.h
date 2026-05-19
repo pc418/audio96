@@ -28,6 +28,7 @@
 #define synth_pwm_h_
 
 #include <Arduino.h>     // github.com/PaulStoffregen/cores/blob/master/teensy4/Arduino.h
+#include "Audio96Config.h"
 #include <AudioStream.h> // github.com/PaulStoffregen/cores/blob/master/teensy4/AudioStream.h
 #include "arm_math.h"    // github.com/PaulStoffregen/cores/blob/master/teensy4/arm_math.h
 

@@ -55,6 +55,7 @@
 #define control_tlv320aic3206_h_
 
 #include <Arduino.h>     // github.com/PaulStoffregen/cores/blob/master/teensy4/Arduino.h
+#include "Audio96Config.h"
 #include "AudioControl.h"
 
 //convenience names to use with inputSelect() to set whnch analog inputs to use
@@ -119,7 +120,7 @@ class AudioControlTLV320AIC3206: public AudioControl
 	  int prevMicDetVal = -1;
 	  int resetPinAIC = 21;  //AIC reset pin, Tympan Rev C
 	  float HP_cutoff_Hz = 0.0f;
-	  float sample_rate_Hz = 44100; //only used with HP_cutoff_Hz to design HP filter on ADC, if used
+	  float sample_rate_Hz = AUDIO_SAMPLE_RATE_EXACT; // only used with HP_cutoff_Hz to design HP filter on ADC, if used
 	  void setIIRCoeffOnADC_Left(uint32_t *coeff);
 	  void setIIRCoeffOnADC_Right(uint32_t *coeff);
 };

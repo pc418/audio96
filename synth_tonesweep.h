@@ -24,6 +24,7 @@
 #define synth_tonesweep_h_
 
 #include <Arduino.h>     // github.com/PaulStoffregen/cores/blob/master/teensy4/Arduino.h
+#include "Audio96Config.h"
 #include <AudioStream.h> // github.com/PaulStoffregen/cores/blob/master/teensy4/AudioStream.h
 
 //                A u d i o S y n t h T o n e S w e e p

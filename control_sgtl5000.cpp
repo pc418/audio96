@@ -572,11 +572,11 @@ bool AudioControlSGTL5000::enable(const unsigned extMCLK, const uint32_t pllFreq
 	
 	if (extMCLK > 0) { 
 		//SGTL is I2S Master
-		write(CHIP_CLK_CTRL, 0x0004 | 0x03);  // 44.1 kHz, 256*Fs, use PLL
+		write(CHIP_CLK_CTRL, 0x000C | 0x03);  // 96 kHz, 256*Fs, use PLL
 		write(CHIP_I2S_CTRL, 0x0030 | (1<<7)); // SCLK=64*Fs, 16bit, I2S format
 	} else {
 		//SGTL is I2S Slave
-		write(CHIP_CLK_CTRL, 0x0004);  // 44.1 kHz, 256*Fs
+		write(CHIP_CLK_CTRL, 0x000C);  // 96 kHz, 256*Fs
 		write(CHIP_I2S_CTRL, 0x0030); // SCLK=64*Fs, 16bit, I2S format
 	}
 
@@ -586,6 +586,7 @@ bool AudioControlSGTL5000::enable(const unsigned extMCLK, const uint32_t pllFreq
 	write(CHIP_DAC_VOL, 0x3C3C); // digital gain, 0dB
 	write(CHIP_ANA_HP_CTRL, 0x7F7F); // set volume (lowest level)
 	write(CHIP_ANA_CTRL, 0x0036);  // enable zero cross detectors
+	ana_ctrl = 0x0036;  // keep shadow register in sync
 
 	semi_automated = true;
 	return true;
@@ -892,8 +893,8 @@ unsigned short AudioControlSGTL5000::autoVolumeControl(uint8_t maxGain, uint8_t 
 	lbiResponse&=3;
 	hardLimit&=1;
 	uint8_t thresh=(pow(10,threshold/20)*0.636)*pow(2,15);
-	uint8_t att=(1-pow(10,-(attack/(20*44100))))*pow(2,19);
-	uint8_t dec=(1-pow(10,-(decay/(20*44100))))*pow(2,23);
+	uint8_t att=(1-pow(10,-(attack/(20*AUDIO_SAMPLE_RATE_EXACT))))*pow(2,19);
+	uint8_t dec=(1-pow(10,-(decay/(20*AUDIO_SAMPLE_RATE_EXACT))))*pow(2,23);
 	write(DAP_AVC_THRESHOLD,thresh);
 	write(DAP_AVC_ATTACK,att);
 	write(DAP_AVC_DECAY,dec);
@@ -1071,4 +1072,3 @@ void calcBiquad(uint8_t filtertype, float fC, float dB_Gain, float Q, uint32_t q
   a2/=a0;
   *coef++=(int)(a2+0.499);
 }
-

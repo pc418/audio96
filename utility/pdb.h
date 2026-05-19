@@ -37,35 +37,35 @@
 
 
 #if F_BUS == 120000000
-  #define PDB_PERIOD (2720-1)
+  #define PDB_PERIOD (1250-1)
 #elif F_BUS == 108000000
-  #define PDB_PERIOD (2448-1)
+  #define PDB_PERIOD (1125-1)
 #elif F_BUS == 96000000
-  #define PDB_PERIOD (2176-1)
+  #define PDB_PERIOD (1000-1)
 #elif F_BUS == 90000000
-  #define PDB_PERIOD (2040-1)
+  #define PDB_PERIOD (938-1)  // 0.049% error
 #elif F_BUS == 80000000
-  #define PDB_PERIOD (1813-1)  // small ?? error
+  #define PDB_PERIOD (833-1)  // 0.040% error
 #elif F_BUS == 72000000
-  #define PDB_PERIOD (1632-1)
+  #define PDB_PERIOD (750-1)
 #elif F_BUS == 64000000
-  #define PDB_PERIOD (1451-1)  // small ?? error
+  #define PDB_PERIOD (667-1)  // 0.054% error
 #elif F_BUS == 60000000
-  #define PDB_PERIOD (1360-1)
+  #define PDB_PERIOD (625-1)
 #elif F_BUS == 56000000
-  #define PDB_PERIOD (1269-1)  // 0.026% error
+  #define PDB_PERIOD (583-1)  // 0.060% error
 #elif F_BUS == 54000000
-  #define PDB_PERIOD (1224-1)
+  #define PDB_PERIOD (563-1)  // 0.089% error
 #elif F_BUS == 48000000
-  #define PDB_PERIOD (1088-1)
+  #define PDB_PERIOD (500-1)
 #elif F_BUS == 40000000
-  #define PDB_PERIOD (907-1)  // small ?? error
+  #define PDB_PERIOD (417-1)  // 0.040% error
 #elif F_BUS == 36000000
-  #define PDB_PERIOD (816-1)
+  #define PDB_PERIOD (375-1)
 #elif F_BUS == 24000000
-  #define PDB_PERIOD (544-1)
+  #define PDB_PERIOD (250-1)
 #elif F_BUS == 16000000
-  #define PDB_PERIOD (363-1)  // 0.092% error
+  #define PDB_PERIOD (167-1)  // 0.200% error
 #else
   #error "Unsupported F_BUS speed"
 #endif

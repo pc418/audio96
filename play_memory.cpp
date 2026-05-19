@@ -71,7 +71,7 @@ void AudioPlayMemory::update(void)
 	s0 = prior;
 
 	switch (playing) {
-	  case 0x01: // u-law encoded, 44100 Hz
+	  case 0x01: // u-law encoded, system sample rate
 		for (i=0; i < AUDIO_BLOCK_SAMPLES; i += 4) {
 			tmp32 = *in++;
 			*out++ = ulaw_decode_table[(tmp32 >> 0) & 255];
@@ -82,7 +82,7 @@ void AudioPlayMemory::update(void)
 		consumed = AUDIO_BLOCK_SAMPLES;
 		break;
 
-	  case 0x81: // 16 bit PCM, 44100 Hz
+	  case 0x81: // 16 bit PCM, system sample rate
 		for (i=0; i < AUDIO_BLOCK_SAMPLES; i += 2) {
 			tmp32 = *in++;
 			*out++ = (int16_t)(tmp32 & 65535);
@@ -91,7 +91,7 @@ void AudioPlayMemory::update(void)
 		consumed = AUDIO_BLOCK_SAMPLES;
 		break;
 
-	  case 0x02: // u-law encoded, 22050 Hz 
+	  case 0x02: // u-law encoded, half sample rate
 		for (i=0; i < AUDIO_BLOCK_SAMPLES; i += 8) {
 			tmp32 = *in++;
 			s1 = ulaw_decode_table[(tmp32 >> 0) & 255];
@@ -111,7 +111,7 @@ void AudioPlayMemory::update(void)
 		consumed = AUDIO_BLOCK_SAMPLES/2;
 		break;
 
-	  case 0x82: // 16 bits PCM, 22050 Hz
+	  case 0x82: // 16 bits PCM, half sample rate
 		for (i=0; i < AUDIO_BLOCK_SAMPLES; i += 4) {
 			tmp32 = *in++;
 			s1 = (int16_t)(tmp32 & 65535);
@@ -125,7 +125,7 @@ void AudioPlayMemory::update(void)
 		consumed = AUDIO_BLOCK_SAMPLES/2;
 		break;
 
-	  case 0x03: // u-law encoded, 11025 Hz
+	  case 0x03: // u-law encoded, quarter sample rate
 		for (i=0; i < AUDIO_BLOCK_SAMPLES; i += 16) {
 			tmp32 = *in++;
 			s1 = ulaw_decode_table[(tmp32 >> 0) & 255];
@@ -153,7 +153,7 @@ void AudioPlayMemory::update(void)
 		consumed = AUDIO_BLOCK_SAMPLES/4;
 		break;
 
-	  case 0x83: // 16 bit PCM, 11025 Hz
+	  case 0x83: // 16 bit PCM, quarter sample rate
 		for (i=0; i < AUDIO_BLOCK_SAMPLES; i += 8) {
 			tmp32 = *in++;
 			s1 = (int16_t)(tmp32 & 65535);
@@ -188,10 +188,9 @@ void AudioPlayMemory::update(void)
 }
 
 
-#define B2M_88200 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT / 2.0)
-#define B2M_44100 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT) // 97352592
-#define B2M_22050 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT * 2.0)
-#define B2M_11025 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT * 4.0)
+#define B2M_96000 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT)
+#define B2M_48000 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT * 2.0)
+#define B2M_24000 (uint32_t)((double)4294967296000.0 / AUDIO_SAMPLE_RATE_EXACT * 4.0)
 
 
 uint32_t AudioPlayMemory::positionMillis(void)
@@ -206,16 +205,15 @@ uint32_t AudioPlayMemory::positionMillis(void)
 	b = (const uint8_t *)beginning;
 	__enable_irq();
 	switch (p) {
-	  case 0x81: // 16 bit PCM, 44100 Hz
-		b2m = B2M_88200;  break;
-	  case 0x01: // u-law encoded, 44100 Hz
-	  case 0x82: // 16 bits PCM, 22050 Hz
-		b2m = B2M_44100;  break;
-	  case 0x02: // u-law encoded, 22050 Hz
-	  case 0x83: // 16 bit PCM, 11025 Hz
-		b2m = B2M_22050;  break;
-	  case 0x03: // u-law encoded, 11025 Hz
-		b2m = B2M_11025;  break;
+	  case 0x81: // 16 bit PCM, system sample rate
+	  case 0x01: // u-law encoded, system sample rate
+		b2m = B2M_96000;  break;
+	  case 0x82: // 16 bits PCM, half sample rate
+	  case 0x02: // u-law encoded, half sample rate
+		b2m = B2M_48000;  break;
+	  case 0x83: // 16 bit PCM, quarter sample rate
+	  case 0x03: // u-law encoded, quarter sample rate
+		b2m = B2M_24000;  break;
 	  default:
 		return 0;
 	}
@@ -234,19 +232,18 @@ uint32_t AudioPlayMemory::lengthMillis(void)
 	b = (const uint32_t *)beginning;
 	__enable_irq();
 	switch (p) {
-	  case 0x81: // 16 bit PCM, 44100 Hz
-	  case 0x01: // u-law encoded, 44100 Hz
-		b2m = B2M_44100;  break;
-	  case 0x82: // 16 bits PCM, 22050 Hz
-	  case 0x02: // u-law encoded, 22050 Hz
-		b2m = B2M_22050;  break;
-	  case 0x83: // 16 bit PCM, 11025 Hz
-	  case 0x03: // u-law encoded, 11025 Hz
-		b2m = B2M_11025;  break;
+	  case 0x81: // 16 bit PCM, system sample rate
+	  case 0x01: // u-law encoded, system sample rate
+		b2m = B2M_96000;  break;
+	  case 0x82: // 16 bits PCM, half sample rate
+	  case 0x02: // u-law encoded, half sample rate
+		b2m = B2M_48000;  break;
+	  case 0x83: // 16 bit PCM, quarter sample rate
+	  case 0x03: // u-law encoded, quarter sample rate
+		b2m = B2M_24000;  break;
 	  default:
 		return 0;
 	}
 	return ((uint64_t)(*(b - 1) & 0xFFFFFF) * b2m) >> 32;
 }
-
 

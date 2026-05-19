@@ -28,6 +28,7 @@
 #define output_i2s_h_
 
 #include <Arduino.h>     // github.com/PaulStoffregen/cores/blob/master/teensy4/Arduino.h
+#include "Audio96Config.h"
 #include <AudioStream.h> // github.com/PaulStoffregen/cores/blob/master/teensy4/AudioStream.h
 #include <DMAChannel.h>  // github.com/PaulStoffregen/cores/blob/master/teensy4/DMAChannel.h
 
@@ -58,7 +59,6 @@ protected:
 	static bool update_responsibility;
 	static DMAChannel dma;
 	static void isr(void);
-	static void isr_fifo_underrun(void);
 private:
 	static audio_block_t *block_left_2nd;
 	static audio_block_t *block_right_2nd;

@@ -29,6 +29,7 @@
 #ifndef effect_reverb_
 #define effect_reverb_
 
+#include "Audio96Config.h"
 #include <AudioStream.h> // github.com/PaulStoffregen/cores/blob/master/teensy4/AudioStream.h
 
 #define APF1_BUF_LEN 600

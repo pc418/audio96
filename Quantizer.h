@@ -37,7 +37,7 @@
 
 class Quantizer {
 public:
-    ///@param audio_sample_rate currently only 44.1kHz and 48kHz are supported
+    ///@param audio_sample_rate currently 44.1kHz, 48kHz, and 96kHz are supported
     Quantizer(float audio_sample_rate);
     void configure(bool noiseShaping, bool dither, float factor);
     void quantize(float* input, int16_t* output, uint16_t length);
